@@ -5,7 +5,8 @@ enemy::enemy()
 	rect.setSize(sf::Vector2f(50, 50));
 	rect.setPosition(500, 400);
 	rect.setFillColor(sf::Color::Blue);
-		
+	text.setPosition(rect.getPosition());
+	text.setString("hp " + to_string(hp) + "/" + to_string(hpMax));
 
 }
 
@@ -14,6 +15,7 @@ void enemy::update()
 {
 	
 	sprite.setPosition(rect.getPosition());
+	text.setPosition(rect.getPosition().x,rect.getPosition().y-rect.getSize().y/2);
 }
 void enemy::updateMovement() 
 {

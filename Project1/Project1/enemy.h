@@ -8,7 +8,8 @@ public:
 	float attackDamage = 5;
 	int counterWalking = 0;
 	int movementLength = 100;
-	int hp = 1;
+	int hpMax = 50;
+	int hp = 50;
 	int direction=0;
 	int counter = 0;
 	enemy();

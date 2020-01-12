@@ -37,7 +37,18 @@ int main()
 	view1.setCenter(sf::Vector2f(window.getSize().x / 2, window.getSize().y / 2));
 	window.setView(view1);
 
+	///////////////////////////////////////////////////////wczytywanie////////////////////////////////////////////////////////////
 
+
+
+
+	//wczytywanie font
+	sf::Font font;
+	if (!font.loadFromFile("arial.ttf"))
+	{
+		return EXIT_FAILURE;
+	}
+	
 	//wczytywanie dzwiekow
 	sf::SoundBuffer buffer;
 	if(!buffer.loadFromFile("scary1.wav"))
@@ -47,6 +58,15 @@ int main()
 	sf::Sound soundDie;
 	soundDie.setBuffer(buffer);
 	
+	//wczytywanie dzwiekow 2
+	sf::SoundBuffer buffer2;
+	if (!buffer2.loadFromFile("song2.wav"))
+	{
+		return EXIT_FAILURE;
+	}
+	sf::Sound sound1;
+	sound1.setBuffer(buffer2);
+
 	//wczytanie textur
 
 	//player
@@ -68,7 +88,10 @@ int main()
 		return EXIT_FAILURE;
 	}
 
+	///////////////////////////////////////////////////////////////////////tworzenie
+	
 
+	
 
 	// tworzenie  enemy
 
@@ -78,10 +101,14 @@ int main()
 
 	vector<enemy>::const_iterator iter;
 	vector<enemy> enemyArray;
+	enemy1.text.setFont(font);
+	enemy1.text.setCharacterSize(12);
+	enemy1.text.setColor(sf::Color::Red);
+
 	enemy1.rect.setPosition(400,300);
 	enemyArray.push_back(enemy1);
 
-	enemy1.rect.setPosition(500, 350);
+    enemy1.rect.setPosition(500, 300);
 	enemyArray.push_back(enemy1);
 
 
@@ -109,6 +136,14 @@ int main()
 
 	class player Player1;
 	Player1.sprite.setTexture(texturePlayer);
+	//text licznik zabojstw
+	sf::Text text;
+	text.setFont(font);
+	text.setCharacterSize(18);
+	text.setColor(sf::Color::Green);
+	text.setPosition(Player1.rect.getPosition().x-window.getSize().x/2, Player1.rect.getPosition().y - window.getSize().y / 2);
+	//text.setPosition(100, 10);
+	text.setString("test");
 
 
 	/////////////////////////////////////////////////////////////////////////
@@ -131,7 +166,7 @@ int main()
 		sf::Time elapsed1 = clock.getElapsedTime();
 		sf::Time elapsed2 = clock2.getElapsedTime();
 		sf::Time elapsed3 = clock3.getElapsedTime();
-
+		
 
 		//shoot fireball
 		
@@ -271,7 +306,7 @@ int main()
 				if (fireballArray[counter].rect.getGlobalBounds().intersects(enemyArray[counter2].rect.getGlobalBounds()))
 				{
 
-					enemyArray[counter2].hp--;
+					enemyArray[counter2].hp-=fireballArray[counter].attackDamage;
 					if (enemyArray[counter2].hp <= 0)
 					{
 						enemyArray[counter2].alive = false;
@@ -294,6 +329,7 @@ int main()
 				enemyArray.erase(iter);
 				break;
 			}
+			counter++;
 		}
 
 		//draw wall
@@ -312,6 +348,10 @@ int main()
 		counter = 0;
 		for(iter=enemyArray.begin();iter!=enemyArray.end();iter++)
 		{
+			enemyArray[counter].text.setString("hp "+ to_string(enemyArray[counter].hp)+"/"+ to_string(enemyArray[counter].hpMax));
+
+			window.draw(enemyArray[counter].text);
+
 			enemyArray[counter].update();
 			enemyArray[counter].updateMovement();
 			
@@ -328,16 +368,27 @@ int main()
 		{
 			fireballArray[counter].update();
 			fireballArray[counter].updateMovement();
-			window.draw(fireballArray[counter].rect);
+			//window.draw(fireballArray[counter].rect);
 			window.draw(fireballArray[counter].sprite);
 			counter++;
 		}
 
-		
+		//muzyka
+
+		if (sound1.getStatus()!= sound1.Playing)
+		{
+			//clock2.restart();
+			sound1.setVolume(2);
+			sound1.play();
+			
+			
+		}
 		
 
+		
+		////////////////////////////////////////////////////////////////////////////////////
 		//update
-
+	
 		fireball1.update();
 		enemy1.update();
 		
@@ -349,6 +400,9 @@ int main()
 		window.setView(view1);
 		view1.setCenter(Player1.rect.getPosition());
 
+		//wyswietlenie textu
+		text.setPosition(Player1.rect.getPosition().x - window.getSize().x / 2, Player1.rect.getPosition().y - window.getSize().y / 2);
+		window.draw(text);
 
 		window.draw(Player1.sprite);
 		window.display();

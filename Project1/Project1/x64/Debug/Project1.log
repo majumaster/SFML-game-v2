@@ -1,0 +1,26 @@
+﻿  Source.cpp
+f:\gamesfml\project1\project1\source.cpp(20): warning C4305: "inicjowanie": obcięcie z "double" do "float"
+f:\gamesfml\project1\project1\source.cpp(36): warning C4244: "argument": konwersja z "T" do "T", możliwa utrata danych
+          with
+          [
+              T=unsigned int
+          ]
+          and
+          [
+              T=float
+          ]
+f:\gamesfml\project1\project1\source.cpp(37): warning C4244: "argument": konwersja z "T" do "T", możliwa utrata danych
+          with
+          [
+              T=unsigned int
+          ]
+          and
+          [
+              T=float
+          ]
+f:\gamesfml\project1\project1\source.cpp(309): warning C4244: "-=": konwersja z "float" do "int", możliwa utrata danych
+f:\gamesfml\project1\project1\source.cpp(106): warning C4996: 'sf::Text::setColor': został uznany za przestarzały
+  f:\gamesfml\sfml-2.5.1\include\sfml\graphics\text.hpp(210): note: zobacz deklarację „sf::Text::setColor”
+f:\gamesfml\project1\project1\source.cpp(143): warning C4996: 'sf::Text::setColor': został uznany za przestarzały
+  f:\gamesfml\sfml-2.5.1\include\sfml\graphics\text.hpp(210): note: zobacz deklarację „sf::Text::setColor”
+  Project1.vcxproj -> F:\gameSFML\Project1\x64\Debug\Project1.exe

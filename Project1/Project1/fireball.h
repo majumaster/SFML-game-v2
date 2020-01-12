@@ -7,7 +7,7 @@ class fireball :public entity
 {
 	public:
 		float movementSpeed = 8;
-		float attackDamage = 5;
+		float attackDamage = 1;
 		int direction = 0;
 
 		fireball();

@@ -77,5 +77,11 @@
     <Media Include="scary1.wav">
       <Filter>Resource Files</Filter>
     </Media>
+    <Media Include="song1.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="song2.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
   </ItemGroup>
 </Project>
