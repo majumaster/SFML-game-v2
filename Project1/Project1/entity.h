@@ -14,6 +14,7 @@ public:
 	sf::RectangleShape rect;
 	sf::Sprite sprite;
 	sf::Text text;
+	sf::Text textName;
 
 
 };

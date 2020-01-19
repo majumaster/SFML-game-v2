@@ -7,6 +7,8 @@ enemy::enemy()
 	rect.setFillColor(sf::Color::Blue);
 	text.setPosition(rect.getPosition());
 	text.setString("hp " + to_string(hp) + "/" + to_string(hpMax));
+	textName.setPosition(rect.getPosition());
+	textName.setString("maly ninja");
 
 }
 
@@ -15,7 +17,8 @@ void enemy::update()
 {
 	
 	sprite.setPosition(rect.getPosition());
-	text.setPosition(rect.getPosition().x,rect.getPosition().y-rect.getSize().y/2);
+	text.setPosition(rect.getPosition().x + 6 / 2, rect.getPosition().y - rect.getSize().y / 2);
+	textName.setPosition(rect.getPosition().x - textName.getScale().x, rect.getPosition().y - rect.getSize().y);
 }
 void enemy::updateMovement() 
 {

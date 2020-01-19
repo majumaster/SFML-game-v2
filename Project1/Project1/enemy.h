@@ -17,6 +17,8 @@ public:
 	void updateMovement();
 
 	bool alive = true;
+	bool destroy=false;
+
 	bool canMoveUp = true;
 	bool canMoveDown = true;
 	bool canMoveLeft = true;

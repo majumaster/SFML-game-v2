@@ -148,6 +148,8 @@
     <ClCompile Include="enemy.cpp" />
     <ClCompile Include="entity.cpp" />
     <ClCompile Include="fireball.cpp" />
+    <ClCompile Include="level.cpp" />
+    <ClCompile Include="overlay.cpp" />
     <ClCompile Include="player.cpp" />
     <ClCompile Include="random.cpp" />
     <ClCompile Include="Source.cpp" />
@@ -161,6 +163,8 @@
     <ClInclude Include="enemy.h" />
     <ClInclude Include="entity.h" />
     <ClInclude Include="fireball.h" />
+    <ClInclude Include="level.h" />
+    <ClInclude Include="overlay.h" />
     <ClInclude Include="player.h" />
     <ClInclude Include="random.h" />
     <ClInclude Include="ResourcePath.hpp" />

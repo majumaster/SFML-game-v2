@@ -36,6 +36,12 @@
     <ClCompile Include="fireball.cpp">
       <Filter>Header Files</Filter>
     </ClCompile>
+    <ClCompile Include="level.cpp">
+      <Filter>Header Files</Filter>
+    </ClCompile>
+    <ClCompile Include="overlay.cpp">
+      <Filter>Header Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="player.png">
@@ -65,6 +71,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="fireball.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="level.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="overlay.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

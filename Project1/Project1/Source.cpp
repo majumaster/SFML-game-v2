@@ -2,7 +2,7 @@
 #include <SFML\Audio.hpp>
 #include <SFML\Audio\SoundBuffer.hpp>
 using namespace std;
-
+#include <sstream>
 #include <iostream>
 //#include "ResourcePath.hpp"
 #include "player.h"
@@ -12,8 +12,8 @@ using namespace std;
 #include "fireball.h"
 #include <ctime>
 #include <time.h>
-
-
+#include "level.h"
+#include <fstream>
 int main()
 {
 	//
@@ -24,6 +24,20 @@ int main()
 	sf::Clock clock;
 	sf::Clock clock2;
 	sf::Clock clock3;
+
+	level level1;
+	ifstream plik22;
+	fstream plikIloZab;
+	
+	plikIloZab.open("iloscPrzeciwnikow.txt");
+	plikIloZab << "0";
+	plikIloZab.close();
+
+	plik22.open("test.txt");
+	plik22 >> level1.zmianaPoziom;
+	plik22.close();
+
+
 
 	//tworzenie okna
 	sf::RenderWindow window(sf::VideoMode(1280, 720), "GAME");
@@ -104,12 +118,21 @@ int main()
 	enemy1.text.setFont(font);
 	enemy1.text.setCharacterSize(12);
 	enemy1.text.setColor(sf::Color::Red);
+	enemy1.textName.setFont(font);
+	enemy1.textName.setCharacterSize(15);
+	enemy1.textName.setColor(sf::Color::Red);
 
-	enemy1.rect.setPosition(400,300);
-	enemyArray.push_back(enemy1);
+	for (int i = 0; i < level1.poziom; i++) 
+	{
+		enemy1.rect.setPosition(400, 300);
+		enemyArray.push_back(enemy1);
+	}
 
-    enemy1.rect.setPosition(500, 300);
-	enemyArray.push_back(enemy1);
+	//enemy1.rect.setPosition(400,300);
+	//enemyArray.push_back(enemy1);
+
+    //enemy1.rect.setPosition(500, 300);
+	//enemyArray.push_back(enemy1);
 
 
 	//wall vector array
@@ -167,6 +190,73 @@ int main()
 		sf::Time elapsed2 = clock2.getElapsedTime();
 		sf::Time elapsed3 = clock3.getElapsedTime();
 		
+
+	
+		/////////////zmiana level-u////////////////////////////////////////////////////////////
+		plik22.open("test.txt");
+		plik22 >> level1.zmianaPoziom;
+		plik22.close();
+		if(level1.poziom!=level1.zmianaPoziom)
+		{
+			level1.iloZab = 0;
+			plikIloZab.open("iloscPrzeciwnikow.txt");
+			plikIloZab << level1.iloZab;
+			plikIloZab.close();
+
+			level1.iloPrzeciwnikow = level1.poziom *level1.poziom;
+			if (level1.iloLifePrzeciwnikow != 0) 
+			{
+
+
+				
+
+				
+				for (counter = 0; counter < level1.iloPrzeciwnikow; counter++)
+				{
+					enemyArray[counter].destroy = true;
+
+				}
+				
+			}
+			level1.poziom = level1.zmianaPoziom;
+			level1.iloPrzeciwnikow = level1.poziom *level1.poziom;
+			level1.iloLifePrzeciwnikow = level1.iloPrzeciwnikow;
+			//usuniecie starych enemy
+			//delete old enemy
+
+			
+			
+
+			
+			//utworzenie enemy
+			for (int i = 0; i < level1.iloPrzeciwnikow; i++)
+			{
+				enemy1.rect.setPosition(400, 300);
+				enemyArray.push_back(enemy1);
+			}
+		}
+		//////////////////////////////////////////////////////////////////////////////
+
+
+		/*
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::R))
+		{
+			if (elapsed3.asSeconds() >= 0.5)
+			{
+				clock3.restart();
+				plik22.open("test.txt");
+				plik22 >> level1.poziom;
+				plik22.close();
+				for (int i = 0; i < level1.poziom; i++)
+				{
+					enemy1.rect.setPosition(400, 300);
+					enemyArray.push_back(enemy1);
+				}
+			}
+		}
+
+		*/
+
 
 		//shoot fireball
 		
@@ -261,42 +351,48 @@ int main()
 		
 		//collides Enemy with wall
 		counter = 0;
+		counter2 = 0;
 		for (iterWall = wallArray.begin(); iterWall != wallArray.end(); iterWall++)
 		{
-			if (enemy1.rect.getGlobalBounds().intersects(wallArray[counter].rect.getGlobalBounds()))
+			counter2 = 0;
+			for (iter = enemyArray.begin(); iter != enemyArray.end(); iter++)
 			{
-				//hit
-				if (enemy1.direction == 0)
+				if (enemyArray[counter2].rect.getGlobalBounds().intersects(wallArray[counter].rect.getGlobalBounds()))
+					//if (wallArray[counter].rect.getGlobalBounds().intersects(enemyArray[counter2].rect.getGlobalBounds()))
 				{
-					enemy1.canMoveUp = false;
-					enemy1.rect.move(0, 1);
-				}
-				else if (enemy1.direction == 1)
-				{
-					enemy1.canMoveDown = false;
-					enemy1.rect.move(0, -1);
-				}
-				else if (enemy1.direction == 2)
-				{
-					enemy1.canMoveLeft = false;
-					enemy1.rect.move(1, 0);
-				}
-				else if (enemy1.direction == 3)
-				{
-					enemy1.canMoveRight = false;
-					enemy1.rect.move(-1, 0);
-				}
-				else
-				{
+					//hit
+					if (enemyArray[counter2].direction == 0)
+					{
+						enemyArray[counter2].canMoveUp = false;
+						enemyArray[counter2].rect.move(0, 1);
+					}
+					else if (enemyArray[counter2].direction == 1)
+					{
+						enemyArray[counter2].canMoveDown = false;
+						enemyArray[counter2].rect.move(0, -1);
+					}
+					else if (enemyArray[counter2].direction == 2)
+					{
+						enemyArray[counter2].canMoveLeft = false;
+						enemyArray[counter2].rect.move(1, 0);
+					}
+					else if (enemyArray[counter2].direction == 3)
+					{
+						enemyArray[counter2].canMoveRight = false;
+						enemyArray[counter2].rect.move(-1, 0);
+					}
+					else
+					{
 
+					}
 				}
+				counter2++;
 			}
-
 
 			counter++;
 		}
 
-		//collides Enemy with wall
+		//collides Enemy with fireball
 		counter = 0;
 		for (iterFireball = fireballArray.begin(); iterFireball != fireballArray.end(); iterFireball++)
 		{
@@ -310,6 +406,11 @@ int main()
 					if (enemyArray[counter2].hp <= 0)
 					{
 						enemyArray[counter2].alive = false;
+						level1.iloZab++;
+						plikIloZab.open("iloscPrzeciwnikow.txt");
+						plikIloZab << level1.iloZab;
+						plikIloZab.close();
+						level1.iloLifePrzeciwnikow--;
 					}
 
 				}
@@ -318,7 +419,7 @@ int main()
 			counter++;
 		}
 
-		//delete dead enemy
+		//delete dead enemy || destroy enemy (new level)
 		counter = 0;
 		for (iter = enemyArray.begin(); iter!= enemyArray.end(); iter++)
 		{
@@ -329,6 +430,13 @@ int main()
 				enemyArray.erase(iter);
 				break;
 			}
+			
+			if (enemyArray[counter].destroy == true)
+			{
+				enemyArray.erase(iter);
+				break;
+			}
+			
 			counter++;
 		}
 
@@ -351,6 +459,7 @@ int main()
 			enemyArray[counter].text.setString("hp "+ to_string(enemyArray[counter].hp)+"/"+ to_string(enemyArray[counter].hpMax));
 
 			window.draw(enemyArray[counter].text);
+			window.draw(enemyArray[counter].textName);
 
 			enemyArray[counter].update();
 			enemyArray[counter].updateMovement();
