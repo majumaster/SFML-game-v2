@@ -11,7 +11,7 @@ public:
 	int poziom=0;
 	int iloZab=0;
 	int zmianaPoziom;
-	int iloPrzeciwnikow;
+	int iloPrzeciwnikow=0;
 	int iloLifePrzeciwnikow=0;
 
 private:

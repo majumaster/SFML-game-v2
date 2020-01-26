@@ -1,2 +1,33 @@
-﻿  overlay.cpp
+﻿  Source.cpp
+c:\users\majumaster\desktop\gra sfml i aplikacja od lvl\gamesfml\project1\project1\source.cpp(21): warning C4305: 'initializing': truncation from 'double' to 'float'
+c:\users\majumaster\desktop\gra sfml i aplikacja od lvl\gamesfml\project1\project1\source.cpp(64): warning C4244: 'argument': conversion from 'T' to 'T', possible loss of data
+          with
+          [
+              T=unsigned int
+          ]
+          and
+          [
+              T=float
+          ]
+c:\users\majumaster\desktop\gra sfml i aplikacja od lvl\gamesfml\project1\project1\source.cpp(65): warning C4244: 'argument': conversion from 'T' to 'T', possible loss of data
+          with
+          [
+              T=unsigned int
+          ]
+          and
+          [
+              T=float
+          ]
+c:\users\majumaster\desktop\gra sfml i aplikacja od lvl\gamesfml\project1\project1\source.cpp(303): warning C4244: 'argument': conversion from 'T' to 'float', possible loss of data
+          with
+          [
+              T=unsigned int
+          ]
+c:\users\majumaster\desktop\gra sfml i aplikacja od lvl\gamesfml\project1\project1\source.cpp(474): warning C4244: '-=': conversion from 'float' to 'int', possible loss of data
+c:\users\majumaster\desktop\gra sfml i aplikacja od lvl\gamesfml\project1\project1\source.cpp(134): warning C4996: 'sf::Text::setColor': was declared deprecated
+  c:\users\majumaster\desktop\gra sfml i aplikacja od lvl\gamesfml\sfml-2.5.1\include\sfml\graphics\text.hpp(210): note: see declaration of 'sf::Text::setColor'
+c:\users\majumaster\desktop\gra sfml i aplikacja od lvl\gamesfml\project1\project1\source.cpp(137): warning C4996: 'sf::Text::setColor': was declared deprecated
+  c:\users\majumaster\desktop\gra sfml i aplikacja od lvl\gamesfml\sfml-2.5.1\include\sfml\graphics\text.hpp(210): note: see declaration of 'sf::Text::setColor'
+c:\users\majumaster\desktop\gra sfml i aplikacja od lvl\gamesfml\project1\project1\source.cpp(206): warning C4996: 'sf::Text::setColor': was declared deprecated
+  c:\users\majumaster\desktop\gra sfml i aplikacja od lvl\gamesfml\sfml-2.5.1\include\sfml\graphics\text.hpp(210): note: see declaration of 'sf::Text::setColor'
   Project1.vcxproj -> C:\Users\MajuMaster\Desktop\gra sfml i aplikacja od lvl\gameSFML\Project1\x64\Debug\Project1.exe

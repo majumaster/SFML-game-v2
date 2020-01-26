@@ -14,6 +14,7 @@ using namespace std;
 #include <time.h>
 #include "level.h"
 #include <fstream>
+#include "Test.h"
 int main()
 {
 	//
@@ -24,20 +25,33 @@ int main()
 	sf::Clock clock;
 	sf::Clock clock2;
 	sf::Clock clock3;
+	sf::Clock clock4;
+	Test test;
+	string str;
 
 	level level1;
-	ifstream plik22;
-	fstream plikIloZab;
-	
+	ifstream plik22;//wczytuje LVL
+	ifstream plikTest;//wczytuje LVL
+	fstream plikIloZab;//nadpisuje ilosc przeciwnikow
+	fstream plikFPS;//nadpisuje ilosc FPS
+
+
+	//plik do nadpisywanie ilosci przeciwnikow
 	plikIloZab.open("iloscPrzeciwnikow.txt");
 	plikIloZab << "0";
 	plikIloZab.close();
 
-	plik22.open("test.txt");
+	plik22.open("poziom.txt");
 	plik22 >> level1.zmianaPoziom;
 	plik22.close();
 
+	plikTest.open("testOnOff.txt");
+	plikTest >> test.czyDziala;
+	plikTest.close();
 
+	plikFPS.open("iloscFPS.txt");
+	plikFPS << "0";
+	plikFPS.close();
 
 	//tworzenie okna
 	sf::RenderWindow window(sf::VideoMode(1280, 720), "GAME");
@@ -139,10 +153,36 @@ int main()
 	vector<wall>::const_iterator iterWall;
 	vector<wall> wallArray;
 	class wall wall1;
+	//wall1.rect.setPosition(100, 100);
+	//wallArray.push_back(wall1);
+	//wall1.rect.setPosition(400, 400);
+	//wallArray.push_back(wall1);
+	///////////////////////////////budowanie mapy////////////////////////////////////////////////////
+	//pomieszczenie 1
 	wall1.rect.setPosition(100, 100);
 	wallArray.push_back(wall1);
-	wall1.rect.setPosition(400, 400);
+	wall1.rect.setSize(sf::Vector2f(200, 50));
+	wall1.rect.setPosition(100, 300);
 	wallArray.push_back(wall1);
+	wall1.rect.setPosition(100, 100);
+	wallArray.push_back(wall1);
+	wall1.rect.setSize(sf::Vector2f(50, 75));
+	wall1.rect.setPosition(300, 275);
+	wallArray.push_back(wall1);
+	wall1.rect.setPosition(300, 100);
+	wallArray.push_back(wall1);
+	//pomieszczenie 2
+	wall1.rect.setSize(sf::Vector2f(200, 50));
+	wall1.rect.setPosition(800, 100);
+	wallArray.push_back(wall1);
+	wall1.rect.setPosition(800, 300);
+	wallArray.push_back(wall1);
+	wall1.rect.setSize(sf::Vector2f(50, 250));
+	wall1.rect.setPosition(1000, 100);
+	wallArray.push_back(wall1);
+
+
+	/////////////////////////////////////////////////////////////////////////////////////////////////
 
 	//fireball
 	class fireball fireball1;
@@ -168,7 +208,8 @@ int main()
 	//text.setPosition(100, 10);
 	text.setString("test");
 
-
+	sf::Time elapsed3;//fps
+	sf::Time elapsed4;//fps test
 	/////////////////////////////////////////////////////////////////////////
 	while (window.isOpen()) 
 	{
@@ -188,22 +229,29 @@ int main()
 		//clock
 		sf::Time elapsed1 = clock.getElapsedTime();
 		sf::Time elapsed2 = clock2.getElapsedTime();
-		sf::Time elapsed3 = clock3.getElapsedTime();
+		elapsed4 = clock4.getElapsedTime();
+		//dla testu (zwiekszenie poziomu)
+		//sf::Time elapsed4 = clock4.getElapsedTime();//dla testu (pobranie ilosci fps)
 		
-
 	
-		/////////////zmiana level-u////////////////////////////////////////////////////////////
-		plik22.open("test.txt");
+		//update testu i levelu
+		plik22.open("poziom.txt");
 		plik22 >> level1.zmianaPoziom;
 		plik22.close();
+
+		plikTest.open("testOnOff.txt");
+		plikTest >> test.czyDziala;
+		plikTest.close();
+
+		/////////////zmiana level-u////////////////////////////////////////////////////////////
 		if(level1.poziom!=level1.zmianaPoziom)
 		{
 			level1.iloZab = 0;
 			plikIloZab.open("iloscPrzeciwnikow.txt");
 			plikIloZab << level1.iloZab;
 			plikIloZab.close();
-
-			level1.iloPrzeciwnikow = level1.poziom *level1.poziom;
+			//usuwanie
+			//level1.iloPrzeciwnikow = level1.poziom *level1.poziom;//zbyteczne przy dzia³aj¹cym oknie
 			if (level1.iloLifePrzeciwnikow != 0) 
 			{
 
@@ -218,11 +266,32 @@ int main()
 				}
 				
 			}
+			/*
+			////////test////
+			if (level1.zmianaPoziom == -1)
+			{
+				test.czyWlaczony = true;
+				level1.poziom = 2;
+				clock3.restart();
+			}
+			if (elapsed3.asSeconds()>=3) {
+				
+				if (test.czyWlaczony == true)
+				{
+					level1.poziom = -1;
+
+
+				}
+				else
+				{
+					level1.poziom = level1.zmianaPoziom;
+				}
+			}
+			///////////////
+			*/
 			level1.poziom = level1.zmianaPoziom;
 			level1.iloPrzeciwnikow = level1.poziom *level1.poziom;
 			level1.iloLifePrzeciwnikow = level1.iloPrzeciwnikow;
-			//usuniecie starych enemy
-			//delete old enemy
 
 			
 			
@@ -231,7 +300,7 @@ int main()
 			//utworzenie enemy
 			for (int i = 0; i < level1.iloPrzeciwnikow; i++)
 			{
-				enemy1.rect.setPosition(400, 300);
+				enemy1.rect.setPosition(rand() % window.getSize().x/2, rand() % window.getSize().y/2);
 				enemyArray.push_back(enemy1);
 			}
 		}
@@ -244,7 +313,7 @@ int main()
 			if (elapsed3.asSeconds() >= 0.5)
 			{
 				clock3.restart();
-				plik22.open("test.txt");
+				plik22.open("poziom.txt");
 				plik22 >> level1.poziom;
 				plik22.close();
 				for (int i = 0; i < level1.poziom; i++)
@@ -364,22 +433,22 @@ int main()
 					if (enemyArray[counter2].direction == 0)
 					{
 						enemyArray[counter2].canMoveUp = false;
-						enemyArray[counter2].rect.move(0, 1);
+						enemyArray[counter2].rect.move(0, 2);
 					}
 					else if (enemyArray[counter2].direction == 1)
 					{
 						enemyArray[counter2].canMoveDown = false;
-						enemyArray[counter2].rect.move(0, -1);
+						enemyArray[counter2].rect.move(0, -2);
 					}
 					else if (enemyArray[counter2].direction == 2)
 					{
 						enemyArray[counter2].canMoveLeft = false;
-						enemyArray[counter2].rect.move(1, 0);
+						enemyArray[counter2].rect.move(2, 0);
 					}
 					else if (enemyArray[counter2].direction == 3)
 					{
 						enemyArray[counter2].canMoveRight = false;
-						enemyArray[counter2].rect.move(-1, 0);
+						enemyArray[counter2].rect.move(-2, 0);
 					}
 					else
 					{
@@ -492,8 +561,23 @@ int main()
 			
 			
 		}
-		
+		//FPS-y
 
+		elapsed3 = clock3.getElapsedTime();
+		text.setString(to_string(1.0f/elapsed3.asSeconds()));
+		clock3.restart();
+		
+		if (test.czyDziala == 1)
+		{
+			if (elapsed4.asSeconds() >= 3.0){
+				clock4.restart();
+				plikFPS.open("iloscFPS.txt");
+				str = text.getString();
+				plikFPS << str;
+				plikFPS.close();
+			}
+		}
+		
 		
 		////////////////////////////////////////////////////////////////////////////////////
 		//update

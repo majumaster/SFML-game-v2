@@ -153,6 +153,7 @@
     <ClCompile Include="player.cpp" />
     <ClCompile Include="random.cpp" />
     <ClCompile Include="Source.cpp" />
+    <ClCompile Include="Test.cpp" />
     <ClCompile Include="wall.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -168,6 +169,7 @@
     <ClInclude Include="player.h" />
     <ClInclude Include="random.h" />
     <ClInclude Include="ResourcePath.hpp" />
+    <ClInclude Include="Test.h" />
     <ClInclude Include="wall.h" />
   </ItemGroup>
   <ItemGroup>
