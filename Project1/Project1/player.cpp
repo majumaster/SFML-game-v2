@@ -6,11 +6,17 @@ player::player()
 	rect.setPosition(400,300);
 	rect.setFillColor(sf::Color::Blue);
 	sprite.setTextureRect(sf::IntRect(0, 0, 64, 64));
+	text.setPosition(rect.getPosition());
+	text.setString("hp " + to_string(hp) + "/" + to_string(hpMax));
+	textName.setPosition(rect.getPosition());
+	textName.setString("Player");
 	
 }
 void player::update() 
 {
 	sprite.setPosition(rect.getPosition());
+	text.setPosition(rect.getPosition().x + 6 / 2, rect.getPosition().y - rect.getSize().y /5);
+	textName.setPosition(rect.getPosition().x +10- textName.getScale().x/2, rect.getPosition().y - rect.getSize().y/2);
 }
 
 void player::updateMovement() 

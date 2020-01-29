@@ -199,7 +199,15 @@ int main()
 
 	class player Player1;
 	Player1.sprite.setTexture(texturePlayer);
-	//text licznik zabojstw
+	Player1.text.setFont(font);
+	Player1.text.setCharacterSize(12);
+	Player1.text.setColor(sf::Color::Red);
+	Player1.textName.setFont(font);
+	Player1.textName.setCharacterSize(15);
+	Player1.textName.setColor(sf::Color::Red);
+	
+	//////////////////////////////////////////////////////TEXT/////////////////////////////////////////
+	//text licznik fps
 	sf::Text text;
 	text.setFont(font);
 	text.setCharacterSize(18);
@@ -208,6 +216,27 @@ int main()
 	//text.setPosition(100, 10);
 	text.setString("test");
 
+	//ilosc zabójstw
+	sf::Text textIloZabojstw;
+	textIloZabojstw.setFont(font);
+	textIloZabojstw.setCharacterSize(18);
+	textIloZabojstw.setColor(sf::Color::Green);
+	textIloZabojstw.setPosition(200,300);
+	//text.setPosition(100, 10);
+	textIloZabojstw.setString("test");
+
+
+	//aktualny poziom
+	
+	sf::Text textAktualnyLevel;
+	textAktualnyLevel.setFont(font);
+	textAktualnyLevel.setCharacterSize(22);
+	textAktualnyLevel.setColor(sf::Color::Green);
+	textAktualnyLevel.setPosition(Player1.rect.getPosition().x , Player1.rect.getPosition().y - window.getSize().y / 2);
+	//text.setPosition(100, 10);
+	textAktualnyLevel.setString("test");
+	
+	/////////////////////////////////////////////////////////////////////////////////////////////////
 	sf::Time elapsed3;//fps
 	sf::Time elapsed4;//fps test
 	/////////////////////////////////////////////////////////////////////////
@@ -259,7 +288,7 @@ int main()
 				
 
 				
-				for (counter = 0; counter < level1.iloPrzeciwnikow; counter++)
+				for (counter = 0; counter < level1.iloLifePrzeciwnikow; counter++)
 				{
 					enemyArray[counter].destroy = true;
 
@@ -306,25 +335,6 @@ int main()
 		}
 		//////////////////////////////////////////////////////////////////////////////
 
-
-		/*
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::R))
-		{
-			if (elapsed3.asSeconds() >= 0.5)
-			{
-				clock3.restart();
-				plik22.open("poziom.txt");
-				plik22 >> level1.poziom;
-				plik22.close();
-				for (int i = 0; i < level1.poziom; i++)
-				{
-					enemy1.rect.setPosition(400, 300);
-					enemyArray.push_back(enemy1);
-				}
-			}
-		}
-
-		*/
 
 
 		//shoot fireball
@@ -387,26 +397,29 @@ int main()
 		{
 			if (Player1.rect.getGlobalBounds().intersects(enemyArray[counter].rect.getGlobalBounds()))
 			{
+				if (enemyArray[counter].attacked == true) {
+					Player1.hp -= enemyArray[counter].attackDamage;
+				}
 				//hit
 				if (Player1.direction == 0)
 				{
 					Player1.canMoveUp = false;
-					Player1.rect.move(0, 1);
+					Player1.rect.move(0, Player1.movementSpeed);
 				}
 				else if (Player1.direction == 1)
 				{
 					Player1.canMoveDown = false;
-					Player1.rect.move(0, -1);
+					Player1.rect.move(0, -Player1.movementSpeed);
 				}
 				else if (Player1.direction == 2)
 				{
 					Player1.canMoveLeft = false;
-					Player1.rect.move(1, 0);
+					Player1.rect.move(Player1.movementSpeed, 0);
 				}
 				else if (Player1.direction == 3)
 				{
 					Player1.canMoveRight = false;
-					Player1.rect.move(-1, 0);
+					Player1.rect.move(-Player1.movementSpeed, 0);
 				}
 				else
 				{
@@ -470,7 +483,7 @@ int main()
 			{
 				if (fireballArray[counter].rect.getGlobalBounds().intersects(enemyArray[counter2].rect.getGlobalBounds()))
 				{
-
+					enemyArray[counter2].attacked = true;
 					enemyArray[counter2].hp-=fireballArray[counter].attackDamage;
 					if (enemyArray[counter2].hp <= 0)
 					{
@@ -487,6 +500,39 @@ int main()
 			}
 			counter++;
 		}
+		//
+		//collides fireball with wall
+		counter = 0;
+		counter2 = 0;
+		for (iterWall = wallArray.begin(); iterWall != wallArray.end(); iterWall++)
+		{
+			counter2 = 0;
+			for (iterFireball = fireballArray.begin(); iterFireball != fireballArray.end(); iterFireball++)
+			{
+				if (fireballArray[counter2].rect.getGlobalBounds().intersects(wallArray[counter].rect.getGlobalBounds()))
+					//if (wallArray[counter].rect.getGlobalBounds().intersects(enemyArray[counter2].rect.getGlobalBounds()))
+				{
+					//hit
+					fireballArray[counter2].destroy = true;
+				}
+				counter2++;
+			}
+
+			counter++;
+		}
+		//destroy fireball
+		counter = 0;
+		for (iterFireball = fireballArray.begin(); iterFireball != fireballArray.end(); iterFireball++)
+		{
+			if (fireballArray[counter].destroy == true)
+			{
+				fireballArray.erase(iterFireball);
+				break;
+			}
+
+			counter++;
+		}
+
 
 		//delete dead enemy || destroy enemy (new level)
 		counter = 0;
@@ -531,7 +577,7 @@ int main()
 			window.draw(enemyArray[counter].textName);
 
 			enemyArray[counter].update();
-			enemyArray[counter].updateMovement();
+			enemyArray[counter].updateMovement(Player1);
 			
 			//window.draw(enemyArray[counter].rect);
 			window.draw(enemyArray[counter].sprite);
@@ -593,11 +639,24 @@ int main()
 		window.setView(view1);
 		view1.setCenter(Player1.rect.getPosition());
 
-		//wyswietlenie textu
+		///////wyswietlenie textu
+		//FPS
 		text.setPosition(Player1.rect.getPosition().x - window.getSize().x / 2, Player1.rect.getPosition().y - window.getSize().y / 2);
 		window.draw(text);
+		//  Zywych/ca³kowita ilosc
+		textIloZabojstw.setPosition(Player1.rect.getPosition().x + window.getSize().x / 2 -300, Player1.rect.getPosition().y + window.getSize().y / 2 -30);
+		textIloZabojstw.setString("Zostalo jeszcze "+to_string(level1.iloLifePrzeciwnikow)+"/"+ to_string(level1.iloPrzeciwnikow));
+		window.draw(textIloZabojstw);
+		// Aktualny LEVEL
+		textAktualnyLevel.setPosition(Player1.rect.getPosition().x-textAktualnyLevel.getScale().x, Player1.rect.getPosition().y - window.getSize().y / 2);
+		textAktualnyLevel.setString("aktualny poziom: "+to_string(level1.poziom));
+		window.draw(textAktualnyLevel);
+
 
 		window.draw(Player1.sprite);
+		Player1.text.setString("hp " + to_string(Player1.hp) + "/" + to_string(Player1.hpMax));
+		window.draw(Player1.text);
+		window.draw(Player1.textName);
 		window.display();
 	}
 

@@ -20,7 +20,7 @@ void enemy::update()
 	text.setPosition(rect.getPosition().x + 6 / 2, rect.getPosition().y - rect.getSize().y / 2);
 	textName.setPosition(rect.getPosition().x - textName.getScale().x, rect.getPosition().y - rect.getSize().y);
 }
-void enemy::updateMovement() 
+void enemy::updateMovement(player &player1) 
 {
 	if (direction==0) 
 	{
@@ -71,12 +71,39 @@ void enemy::updateMovement()
 	}
 	counterWalking++;
 
-	if (counter >= movementLength)
+	if (attacked == true)
 	{
-		counter = 0;
-		direction = generateRandom(10);
-		//direction = 2;
+		if (rect.getPosition().x > player1.rect.getPosition().x+10)
+		{
+			direction = 2;
+		}
+		else if (rect.getPosition().x < player1.rect.getPosition().x-10)
+		{
+			direction = 3;
+		}
+		else if (rect.getPosition().y > player1.rect.getPosition().y+10)
+		{
+			direction = 0;
+		}
+		else if (rect.getPosition().y < player1.rect.getPosition().y-10)
+		{
+			direction = 1;
+		}
+
 	}
+	else 
+	{
+		if (counter >= movementLength)
+		{
+			counter = 0;
+
+			direction = generateRandom(10);
+
+			//direction = generateRandom(10);
+
+		}
+	}
+	
 	counter++;
 
 
